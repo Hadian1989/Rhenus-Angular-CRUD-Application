@@ -1,0 +1,124 @@
+<div>
+  <form [formGroup]="userForm">
+    <p-panel header="Basic Info">
+      <div class="p-d-flex p-flex-column">
+        <div
+          *ngIf="!0; else editfirstname"
+          class="p-d-flex p-jc-between my-border"
+        >
+          <div class="p-d-flex p-ai-center" id="firstname">
+            <label for="firstname" style="font-weight: bold"
+              >FIRST NAME:
+            </label>
+            <span>{{ userForm}}</span>
+          </div>
+
+          <div class="p-d-flex p-ai-center">
+            <button
+              pButton
+              pRipple
+              type="button"
+              class="p-button-raised p-button-text"
+              label="Edit"
+              (click)="edit('first_name')"
+            ></button>
+          </div>
+        </div>
+        <ng-template #editfirstname>
+          <div class="p-d-flex p-jc-between my-border">
+            <div>
+              <label class="p-mr-2" for="firstname" style="font-weight: bold"
+                >New FIRST NAME:
+              </label>
+              <input
+                id="firstname"
+                formControlName="first_name"
+                class="input-border"
+              />
+            </div>
+            <div class="p-d-flex p-flex-row">
+              <div class="p-mr-2 p-order-1">
+                <button
+                  pButton
+                  pRipple
+                  class="p-button-raised p-button-text"
+                  type="submit"
+                  (click)="submitUserInfo('first_name')"
+                  label="Save"
+                
+                ></button>
+              </div>
+              <div class="p-mr-2 p-order-2">
+                <button
+                  pButton
+                  pRipple
+                  class="p-button-raised p-button-text"
+                  type="button"
+                  (click)="cancelEditUserInfo('first_name')"
+                  label="Cancel"
+                ></button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <div
+          *ngIf="!0; else editlasttname"
+          class="p-d-flex p-jc-between my-border"
+        >
+          <div class="p-d-flex p-ai-center" id="lastname">
+            <label for="lastname" style="font-weight: bold">LAST NAME: </label
+            ><span>{{ userForm.controls}}</span>
+            <!-- ><span>{{ userForm.controls.last_name.value }}</span> -->
+          </div>
+          <div class="p-d-flex p-ai-center">
+            <button
+              pButton
+              pRipple
+              type="button"
+              class="p-button-raised p-button-text"
+              label="Edit"
+              (click)="edit('last_name')"
+            ></button>
+          </div>
+        </div>
+        <ng-template #editlasttname>
+          <div class="p-d-flex p-jc-between my-border">
+            <div>
+              <label class="p-mr-2" for="lastname" style="font-weight: bold"
+                >New LAST NAME:
+              </label>
+              <input
+                id="lastname"
+                formControlName="last_name"
+                class="input-border"
+              />
+            </div>
+            <div class="p-d-flex p-flex-row">
+              <div class="p-mr-2 p-order-1">
+                <button
+                  pButton
+                  pRipple
+                  class="p-button-raised p-button-text"
+                  type="submit"
+                  (click)="submitUserInfo('last_name')"
+                  label="Save"
+                ></button>
+              </div>
+              <div class="p-mr-2 p-order-2">
+                <button
+                  pButton
+                  pRipple
+                  class="p-button-raised p-button-text"
+                  type="button"
+                  (click)="cancelEditUserInfo('last_name')"
+                  label="Cancel"
+                ></button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </p-panel>
+  </form>
+</div>
+>
