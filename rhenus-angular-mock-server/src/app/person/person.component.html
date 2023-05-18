@@ -1,1 +1,117 @@
 <p>person works!</p>
+<div class="col-md-5">
+  <h3>Add person</h3>
+  <p-dialog
+    header="Compare"
+    [(visible)]="displayResponsive"
+    [breakpoints]="{ '960px': '75vw' }"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+    [draggable]="false"
+    [resizable]="false"
+  >
+    <form [formGroup]="personForm">
+      <div class="p-d-flex p-jc-between my-border">
+        <div>
+          <label class="p-mr-2" for="firstname" style="font-weight: bold"
+            >First NAME:
+          </label>
+          <input
+            id="lastname"
+            formControlName="first_name"
+            class="input-border"
+          />
+        </div>
+      </div>
+      <div class="p-d-flex p-jc-between my-border">
+        <div>
+          <label class="p-mr-2" for="lastname" style="font-weight: bold">
+            LAST NAME:
+          </label>
+          <input
+            id="lastname"
+            formControlName="last_name"
+            class="input-border"
+          />
+        </div>
+      </div>
+      <div class="p-d-flex p-jc-between my-border">
+        <div>
+          <label class="p-mr-2" for="email" style="font-weight: bold"
+            >Email:
+          </label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="input-border"
+          />
+        </div>
+      </div></form
+  ></p-dialog>
+
+  <form (ngSubmit)="addUser()">
+    <div class="form-group">
+      <label>First Name</label>
+      <input
+        type="text"
+        name="first_name"
+        [(ngModel)]="user.first_name"
+        class="form-control"
+      />
+    </div>
+    <div class="form-group">
+      <label>Last Name</label>
+      <input
+        type="text"
+        name="last_name"
+        [(ngModel)]="user.last_name"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>email</label>
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="user.email"
+        class="form-control"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-dark">Save</button>
+  </form>
+</div>
+<div class="container-fluid">
+  <div class="mx-auto">
+    <div
+      class="row m-lg-2 mx-xl-3 mx-sm-4 mx-md-1 gx-lg-4 gx-md-3 gx-sm-2 g-5 gy-2 align-items-center"
+    >
+      <div
+        class="col-lg-3 col-md-6 col-sm-12 my-2 mx-lg-0 mx-md-0 mx-sm-0 align-self-center"
+      >
+        <h5 class="font-weight-bold">H5</h5>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 col-sm-12 my-2 mx-lg-0 mx-md-0 mx-sm-0 align-self-center"
+      >
+        <h5 class="font-weight-bold">H55</h5>
+      </div>
+    </div>
+    <div
+      class="row m-lg-2 mx-xl-3 mx-sm-4 mx-md-1 gx-lg-4 gx-md-3 gx-sm-2 g-5 gy-2 align-items-center"
+    >
+      <div
+        class="col-lg-3 col-md-6 col-sm-12 my-2 mx-lg-0 mx-md-0 mx-sm-0 align-self-center"
+      >
+        <h5 class="font-weight-bold">H5</h5>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 col-sm-12 my-2 mx-lg-0 mx-md-0 mx-sm-0 align-self-center"
+      >
+        <h5 class="font-weight-bold">H55</h5>
+      </div>
+    </div>
+  </div>
+</div>

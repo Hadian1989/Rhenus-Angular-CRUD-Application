@@ -1,53 +1,8 @@
 <div class="container">
   <div class="row pt-3">
-    <div class="col-md-5">
-      <h3>Add person</h3>
-      <form (ngSubmit)="addUser()">
-        <div class="form-group">
-          <label>Id</label>
-          <input
-            type="number"
-            name="id"
-            [(ngModel)]="user.id"
-            class="form-control"
-          />
-        </div>
-
-        <div class="form-group">
-          <label>First Name</label>
-          <input
-            type="text"
-            name="first_name"
-            [(ngModel)]="user.first_name"
-            class="form-control"
-          />
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input
-            type="text"
-            name="last_name"
-            [(ngModel)]="user.last_name"
-            class="form-control"
-          />
-        </div>
-
-        <div class="form-group">
-          <label>email</label>
-          <input
-            type="email"
-            name="email"
-            [(ngModel)]="user.email"
-            class="form-control"
-          />
-        </div>
-
-        <button type="submit" class="btn btn-dark">Save</button>
-      </form>
-    </div>
-
-    <div class="col-md-7">
+    <div class="col-md-8">
       <h3>Users</h3>
+      <a routerLink="/person"><button type="button">New Person</button> </a>
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
@@ -66,10 +21,18 @@
             <td>{{ user.last_name }}</td>
             <td>{{ user.email }}</td>
             <td>
-              <span>
-                <!-- <button label="Save" icon="pi pi-check"></button>
-                <button label="Delete" icon="pi pi-trash"></button> -->
-              </span>
+              <div class="row align-items-center mx-auto">
+                <div class="col-lg-3 mx-1">
+                  <p-button icon="pi pi-user" styleClass="p-button-rounded p-button-text p-button-raised" (onClick)="viewPersonDetail(user.id)"></p-button>
+                </div>
+                <div class="col-lg-3 mx-1">
+                  <p-button icon="pi pi-user-edit" styleClass="p-button-rounded p-button-help p-button-text p-button-raised" (onClick)="editPerson(user.id)"></p-button>
+
+                </div>
+                <div class="col-lg-3 mx-1">
+                  <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger p-button-text p-button-raised" (onClick)="deletePerson(user.id)"></p-button>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>

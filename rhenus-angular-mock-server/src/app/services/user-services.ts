@@ -13,13 +13,16 @@ export class UserServices {
     return this.http.get<person[]>(this.baseUrl);
   }
   getPerson(userId: number) {
-    return this.http.get<person>(this.baseUrl);
+    return this.http.get<person>(this.baseUrl.concat(`/${userId}`));
   }
 
   addUser(user: person) {
     return this.http.post(this.baseUrl, user);
   }
-  updateUser(userId: number) {
-    return this.http.patch(this.baseUrl, userId);
+  updateUser(userId: number, body: person) {
+    return this.http.patch(this.baseUrl.concat(`/${userId}`), body);
+  }
+  deleteUser(userId: number) {    
+    return this.http.delete(this.baseUrl.concat(`/${userId}`));
   }
 }

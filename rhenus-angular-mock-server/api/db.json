@@ -2,43 +2,57 @@
   "users": [
     {
       "id": 1,
-      "name": "john",
+      "first_name": "john",
+      "last_name": "lastName",
       "email": "john@gmail.com"
     },
     {
       "id": 2,
-      "name": "max",
+      "first_name": "max",
+      "last_name": "lastName",
       "email": "max@gmail.com"
     },
     {
       "id": 3,
-      "name": "mathew",
+      "first_name": "mathew",
+      "last_name": "lastName",
       "email": "mathew@gmail.com"
     },
     {
       "id": 4,
-      "name": "ravindra",
+      "first_name": "ravindra",
+      "last_name": "lastName",
       "email": "ravindra@gmail.com"
     },
     {
-      "id": 5,
-      "name": "lynda",
-      "email": "lynda@xyz.com"
-    },
-    {
-      "id": 6,
-      "name": "dev ravindra",
-      "email": "devravindra@xyz.com"
-    },
-    {
       "id": 7,
-      "name": "ghazal",
+      "first_name": "ghazal",
+      "last_name": "lastName",
       "email": "ghaza;@hsja.asl"
     },
     {
       "id": 8,
-      "name": "ascas",
+      "first_name": "ascas",
+      "last_name": "lastName",
       "email": "asd@sdf.j"
+    },
+    {
+      "id": 9,
+      "first_name": "hello",
+      "last_name": "kast",
+      "email": "john@gmail.com"
+    },
+    {
+      "id": 10,
+      "first_name": "xcvx",
+      "last_name": "zxc",
+      "email": "zxc"
+    },
+    {
+      "id": 11,
+      "first_name": "xcvx",
+      "last_name": "zxc",
+      "email": "zxc"
     }
   ]
 }
