@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogModule } from 'primeng/dialog';
 import { RoutingModule } from './routing.module';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [PeopleComponent, PersonComponent],
@@ -18,7 +20,9 @@ import { RoutingModule } from './routing.module';
     ReactiveFormsModule,
     DialogModule,
     RoutingModule,
+    TableModule,
+    ToastModule
   ],
-  exports: [ButtonModule, FormsModule, HttpClientModule, DialogModule],
+  exports: [ButtonModule, FormsModule, HttpClientModule, DialogModule,TableModule,ToastModule],
 })
 export class SharedModule {}
