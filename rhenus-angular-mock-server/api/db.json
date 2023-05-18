@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "john",
+      "email": "john@gmail.com"
+    },
+    {
+      "id": 2,
+      "name": "max",
+      "email": "max@gmail.com"
+    },
+    {
+      "id": 3,
+      "name": "mathew",
+      "email": "mathew@gmail.com"
+    },
+    {
+      "id": 4,
+      "name": "ravindra",
+      "email": "ravindra@gmail.com"
+    },
+    {
+      "id": 5,
+      "name": "lynda",
+      "email": "lynda@xyz.com"
+    },
+    {
+      "id": 6,
+      "name": "dev ravindra",
+      "email": "devravindra@xyz.com"
+    },
+    {
+      "id": 7,
+      "name": "ghazal",
+      "email": "ghaza;@hsja.asl"
+    },
+    {
+      "id": 8,
+      "name": "ascas",
+      "email": "asd@sdf.j"
+    }
+  ]
+}
