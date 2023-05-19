@@ -6,7 +6,7 @@ import { PersonComponent } from '../person/person.component';
 
 export const routes: Routes = [
   { path: '', component: PeopleComponent },
-  { path: 'person', component: PersonComponent },
+  { path: 'person/:action/:id', component: PersonComponent },
 
   { path: '*', redirectTo: '' },
 ];

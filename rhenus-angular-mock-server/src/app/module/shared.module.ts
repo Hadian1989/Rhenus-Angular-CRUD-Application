@@ -23,6 +23,6 @@ import { ToastModule } from 'primeng/toast';
     TableModule,
     ToastModule
   ],
-  exports: [ButtonModule, FormsModule, HttpClientModule, DialogModule,TableModule,ToastModule],
+  exports: [CommonModule,ButtonModule, FormsModule, HttpClientModule, DialogModule,TableModule,ToastModule,PersonComponent],
 })
 export class SharedModule {}

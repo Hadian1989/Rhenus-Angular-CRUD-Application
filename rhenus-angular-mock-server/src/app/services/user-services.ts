@@ -19,7 +19,7 @@ export class UserServices {
   addUser(user: person) {
     return this.http.post(this.baseUrl, user);
   }
-  updateUser(userId: number, body: person) {
+  updateUser(userId: number, body: any) {
     return this.http.patch(this.baseUrl.concat(`/${userId}`), body);
   }
   deleteUser(userId: number) {    

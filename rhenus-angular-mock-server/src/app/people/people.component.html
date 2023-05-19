@@ -12,18 +12,9 @@
             styleClass="p-button-raised p-button-text"
             label="Add New Person"
             icon="pi pi-plus"
-            (onClick)="showResponsiveDialog()"
-          ></p-button>
-          <p-dialog
-            header="Create New Person"
-            [(visible)]="displayResponsive"
-            [breakpoints]="{ '960px': '75vw' }"
-            [style]="{ width: '50vw' }"
-            [baseZIndex]="10000"
-            [draggable]="false"
-            [resizable]="false"
-            ><app-person></app-person
-          ></p-dialog>
+            (onClick)="showCreateModal()"
+          >
+          </p-button>
         </div>
       </div>
     </div>
@@ -37,7 +28,7 @@
           [showCurrentPageReport]="true"
           [tableStyle]="{ 'min-width': '50rem' }"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          [rowsPerPageOptions]="[10, 25, 50]"
+          [rowsPerPageOptions]="[5, 10, 20]"
           [columns]="cols"
         >
           <ng-template pTemplate="header" let-columns>
@@ -65,15 +56,17 @@
                     <p-button
                       icon="pi pi-user"
                       styleClass="p-button-rounded p-button-text p-button-raised"
-                      (onClick)="viewPersonDetail(user.id)"
-                    ></p-button>
+                      (onClick)="publishEvent('detail', user.id)"
+                    >
+                    </p-button>
                   </div>
                   <div class="col-2 mx-1">
                     <p-button
                       icon="pi pi-user-edit"
                       styleClass="p-button-rounded p-button-help p-button-text p-button-raised"
-                      (onClick)="editPerson(user.id)"
-                    ></p-button>
+                      (onClick)="publishEvent('edit', user.id)"
+                    >
+                    </p-button>
                   </div>
                   <div class="col-2 mx-1">
                     <p-button
@@ -91,3 +84,138 @@
     </div>
   </div>
 </div>
+
+<p-dialog
+  header="Create New person"
+  [(visible)]="showDialog"
+  [style]="{ width: '50vw' }"
+>
+  <div class="card">
+    <h5></h5>
+    <form [formGroup]="personForm">
+      <div class="formgrid grid">
+        <div class="field col my-2">
+          <label class="mr-2" for="firstname2">First name:</label>
+          <input
+            required
+            formControlName="first_name"
+            id="firstname2"
+            type="text"
+            placeholder="First Name"
+            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+          />
+          <div
+            class="p-mt-2"
+            *ngIf="
+              personForm.controls['first_name'].errors &&
+              (personForm.controls['first_name'].touched ||
+                personForm.controls['first_name'].dirty)
+            "
+          >
+            <small
+              class="p-error"
+              *ngIf="personForm.controls['first_name'].hasError('required')"
+              >*This field is required.</small
+            >
+            <small
+            class="p-error"
+            *ngIf="(
+              personForm.controls['first_name'].hasError('minlength') ||
+              personForm.controls['first_name'].hasError('maxLength'))
+            "
+            >Number of Character should be between 2 to 30</small
+          >
+          </div>
+        </div>
+        <div class="field col my-2">
+          <label class="mr-2" for="lastname2">Last Name:</label>
+          <input
+            required
+            formControlName="last_name"
+            id="lastname2"
+            placeholder="Last Name"
+            type="text"
+            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+          />
+        </div>
+        <div
+          class="p-mt-2"
+          *ngIf="
+            personForm.controls['last_name'].errors &&
+            (personForm.controls['last_name'].touched ||
+              personForm.controls['last_name'].dirty)
+          "
+        >
+          <small
+            class="p-error"
+            *ngIf="personForm.controls['last_name'].hasError('required')"
+            >*This field is required.</small
+          >
+          <small
+            class="p-error"
+            *ngIf="(
+              personForm.controls['last_name'].hasError('minlength') ||
+              personForm.controls['last_name'].hasError('maxLength'))
+            "
+            >Number of Character should be between 2 to 30</small
+          >
+        </div>
+        <div class=" field col my-2">
+          <label class="mr-2" for="email">Email:</label>
+          <input
+            required
+            formControlName="email"
+            id="email"
+            placeholder="Email"
+            type="email"
+            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+          />
+
+          <div
+            class="p-mt-2"
+            *ngIf="
+              personForm.controls['email'].errors &&
+              (personForm.controls['email'].touched ||
+                personForm.controls['email'].dirty)
+            "
+          >
+            <small
+              class="p-error"
+              *ngIf="personForm.controls['email'].hasError('required')"
+              >*This field is required.</small
+            >
+            <small
+              class="p-error"
+              *ngIf="personForm.controls['email'].hasError('email')"
+              >*Enter email format.</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-3">
+        <div class="p-mr-2 p-order-1 p-col-2">
+          <button
+            pButton
+            pRipple
+            class="p-button-raised p-button-text"
+            type="submit"
+            (click)="createPerson()"
+            label="Save"
+            [disabled]="!personForm.valid"
+          ></button>
+        </div>
+        <div class="p-mr-2 p-order-2 p-col-2">
+          <button
+            pButton
+            pRipple
+            class="p-button-raised p-button-text"
+            type="button"
+            label="Cancel"
+            (click)="cancelCreateModal()"
+          ></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</p-dialog>
