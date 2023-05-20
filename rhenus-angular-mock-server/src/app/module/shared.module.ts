@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { RoutingModule } from './routing.module';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [PeopleComponent, PersonComponent],
@@ -21,8 +22,19 @@ import { ToastModule } from 'primeng/toast';
     DialogModule,
     RoutingModule,
     TableModule,
-    ToastModule
+    ToastModule,
+    TooltipModule
   ],
-  exports: [CommonModule,ButtonModule, FormsModule, HttpClientModule, DialogModule,TableModule,ToastModule,PersonComponent],
+  exports: [
+    CommonModule,
+    ButtonModule,
+    FormsModule,
+    HttpClientModule,
+    DialogModule,
+    TableModule,
+    ToastModule,
+    PersonComponent,
+    TooltipModule
+  ],
 })
 export class SharedModule {}

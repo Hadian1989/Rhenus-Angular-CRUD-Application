@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { person } from '../models/user';
-import { UserServices } from '../services/user-services';
+import { IPerson } from '../models/person';
+import { PersonApiServices } from '../services/person-api-services';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -12,9 +12,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   providers: [MessageService],
 })
 export class PeopleComponent implements OnInit {
-  cols: any[] = [];
-  users!: person[];
-  user!: person;
+  tableColHeader: { header: string }[] = [];
+  people!: IPerson[];
+  person!: IPerson;
+  selectedPeople!: IPerson[];
   personForm: FormGroup = this.fb.group({
     email: [
       '',
@@ -33,7 +34,7 @@ export class PeopleComponent implements OnInit {
   action!: string;
 
   constructor(
-    private userService: UserServices,
+    private personApiService: PersonApiServices,
     private router: Router,
     private messageService: MessageService,
     private fb: FormBuilder
@@ -41,7 +42,7 @@ export class PeopleComponent implements OnInit {
     this.getPeople();
   }
   ngOnInit(): void {
-    this.cols = [
+    this.tableColHeader = [
       { header: 'ID' },
       { header: 'First Name' },
       { header: 'Last Name' },
@@ -51,9 +52,9 @@ export class PeopleComponent implements OnInit {
   }
 
   private getPeople() {
-    this.userService.getPeople().subscribe({
+    this.personApiService.getPeople().subscribe({
       next: (res) => {
-        this.users = res;
+        this.people = res;
       },
       error: (err) => {
         console.log(err),
@@ -67,7 +68,7 @@ export class PeopleComponent implements OnInit {
   }
 
   deletePerson(userId: number) {
-    this.userService.deleteUser(userId).subscribe({
+    this.personApiService.deletePerson(userId).subscribe({
       next: (res) => {
         console.log('delete successfully');
         this.messageService.add({
@@ -103,12 +104,12 @@ export class PeopleComponent implements OnInit {
     }
   }
   createPerson() {
-    let user: person = {
+    let person: IPerson = {
       first_name: this.personForm.controls['first_name'].value,
       last_name: this.personForm.controls['last_name'].value,
       email: this.personForm.controls['email'].value,
     };
-    this.userService.addUser(user).subscribe({
+    this.personApiService.addPerson(person).subscribe({
       next: (res) => {
         console.log('create successfully');
         this.messageService.add({

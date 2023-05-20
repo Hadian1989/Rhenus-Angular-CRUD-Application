@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UserServices } from '../services/user-services';
-import { person } from '../models/user';
+import { Component, OnInit } from '@angular/core';
+import { PersonApiServices } from '../services/person-api-services';
+import { IPerson } from '../models/person';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,13 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class PersonComponent implements OnInit {
   showEditDialog!: boolean;
-  constructor(
-    private userService: UserServices,
-    private fb: FormBuilder,
-    private messageService: MessageService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  apiAction: string = '';
+  id_quary!: number;
   personForm: FormGroup = this.fb.group({
     id: [''],
     email: ['', Validators.required],
@@ -27,29 +22,29 @@ export class PersonComponent implements OnInit {
     first_name: ['', Validators.required],
   });
 
-  action: string = '';
-  id_quary!: number;
+  constructor(
+    private personApiService: PersonApiServices,
+    private fb: FormBuilder,
+    private messageService: MessageService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.action = params['action'];
+      this.apiAction = params['action'];
       this.id_quary = params['id'];
     });
-
     this.getPersonDetail();
   }
 
-  editPersonDetail() {
-    this.action = 'edit';
-    this.showEditDialog = true;
-  }
   getPersonDetail() {
-    this.userService.getPerson(this.id_quary).subscribe({
+    this.personApiService.getPersonDetail(this.id_quary).subscribe({
       next: (res) => {
         this.personForm.patchValue({
+          id: res.id,
           email: res.email,
           first_name: res.first_name,
           last_name: res.last_name,
-          id: res.id,
         });
       },
       error: (err) => {
@@ -63,7 +58,7 @@ export class PersonComponent implements OnInit {
     });
   }
   deletePerson() {
-    this.userService.deleteUser(this.id_quary).subscribe({
+    this.personApiService.deletePerson(this.id_quary).subscribe({
       next: (res) => {
         console.log('delete successfully');
         this.messageService.add({
@@ -71,7 +66,7 @@ export class PersonComponent implements OnInit {
           summary: 'Success',
           detail: 'delete successfully',
         });
-        this.showPeopleList();
+        this.returnToPeopleListPage();
       },
       error: (err) => {
         console.log(err),
@@ -83,18 +78,16 @@ export class PersonComponent implements OnInit {
       },
     });
   }
-  showPeopleList() {
-    this.router.navigate(['']);
-  }
+
   updateDetail() {
-    let user: person = {
+    let person: IPerson = {
       id: this.personForm.controls['id'].value,
       first_name: this.personForm.controls['first_name'].value,
       last_name: this.personForm.controls['last_name'].value,
       email: this.personForm.controls['email'].value,
     };
 
-    this.userService.updateUser(this.id_quary, user).subscribe({
+    this.personApiService.updatePerson(this.id_quary, person).subscribe({
       next: (res) => {
         console.log('update successfully');
         this.showEditDialog = false;
@@ -109,27 +102,15 @@ export class PersonComponent implements OnInit {
       },
     });
   }
-  edit(property: string) {
-    this.userService
-      .updateUser(
-        this.id_quary,
-        JSON.stringify(this.personForm.controls[property].value)
-      )
-      .subscribe({
-        next: (res) => {
-          console.log('update successfully');
-        },
-        error: (err) => {
-          console.log(err),
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: err,
-            });
-        },
-      });
+
+  editPersonDetail() {
+    this.apiAction = 'edit';
+    this.showEditDialog = true;
   }
-  cancelEditModal() {
+  cancelPersonDetail() {
     this.showEditDialog = false;
+  }
+  returnToPeopleListPage() {
+    this.router.navigate(['']);
   }
 }

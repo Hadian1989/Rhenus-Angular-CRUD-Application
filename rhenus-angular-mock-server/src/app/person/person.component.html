@@ -1,18 +1,18 @@
 <div class="container-fluid" style="width: 80%">
   <div class="card my-4 p-4">
-    <h5>View Person Detail</h5>
+    <h5 style="color: rgb(70, 69, 69)">View Person Detail</h5>
     <div class="formgrid grid">
       <div class="field col">
-        <label for="firstname2">ID: </label>
+        <label for="firstname2">Id: </label>
         {{ personForm.controls["id"].value }}
       </div>
       <div class="field col">
-        <label for="firstname2">First name: </label
+        <label for="firstname2">First Name: </label
         ><b> {{ personForm.controls["first_name"].value }}</b>
         <span class="mx-3"> </span>
       </div>
       <div class="field col">
-        <label for="lastname2">Last name: </label
+        <label for="lastname2">Last Name: </label
         ><b> {{ personForm.controls["last_name"].value }}</b>
         <span class="mx-3"> </span>
       </div>
@@ -21,101 +21,99 @@
         ><b> {{ personForm.controls["email"].value }}</b>
         <span class="mx-3"> </span>
       </div>
-      <div class="row my-2 align-items-center">
-        <div class="col-2 align-self-center">
-          <div class="m-2 mx-auto align-items-center" style="border-radius: 2%">
-            <p-button
-              label="Edit"
-              (onClick)="editPersonDetail()"
-              styleClass="p-button-raised p-button-text p-button-warning"
-            ></p-button>
-          </div>
-        </div>
+      <div class="row my-2 mx-5 align-items-center">
+        <div class="col-2"></div>
+        <div class="col-8 align-items-center align-self-center">
+          <p-button
+            label="Edit"
+            icon="pi pi-user-edit"
+            (onClick)="editPersonDetail()"
+            styleClass="p-button-raised p-button-text p-button-warning px-3 py-2 m-3"
+          ></p-button>
+          <p-button
+            label="Delete"
+            icon="pi pi-trash"
+            (onClick)="deletePerson()"
+            styleClass="p-button-raised p-button-text p-button-danger px-3 py-2 m-3"
+          ></p-button>
 
-        <div class="col-2 align-self-center">
-          <div class="m-2 mx-auto align-items-center" style="border-radius: 3%">
-            <p-button
-              label="Delete"
-              (onClick)="deletePerson()"
-              styleClass="p-button-raised p-button-text p-button-danger"
-            ></p-button>
-          </div>
-        </div>
-        <div class="col-2 align-self-center">
-          <div class="m-2 mx-auto align-items-center" style="border-radius: 3%">
-            <p-button
-              label="People List Page"
-              styleClass="p-button-raised p-button-text"
-              (onClick)="showPeopleList()"
-            ></p-button>
-          </div>
+          <p-button
+            label="People List"
+            icon="pi pi-users"
+            styleClass="p-button-raised p-button-text px-3 py-2 m-3"
+            (onClick)="returnToPeopleListPage()"
+          ></p-button>
         </div>
       </div>
     </div>
   </div>
-
-  <p-dialog
-    header="Edit Person Info"
-    [(visible)]="showEditDialog"
-    [style]="{ width: '50vw' }"
-  >
-    <div class="card">
-      <form [formGroup]="personForm">
-        <div class="formgrid grid">
-          <div class="field col my-2">
-            <label class="mr-2" for="firstname2">New First name: </label>
-            <input
-              placeholder="{{ this.personForm.controls['first_name'].value }}"
-              formControlName="first_name"
-              id="firstname2"
-              type="text"
-              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-            />
-          </div>
-
-          <div class="field col my-2">
-            <label class="mr-2" for="lastname2">Last name: </label>
-            <input
-              formControlName="last_name"
-              id="lastname2"
-              type="text"
-              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-            />
-          </div>
-          <div class="field col my-2">
-            <label class="mr-2" for="email">Email: </label>
-            <input
-              formControlName="email"
-              id="email"
-              type="email"
-              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-            />
-          </div>
-        </div>
-
-        <div class="row m-3">
-          <div class="mx-2 p-order-1 p-col-2">
-            <button
-              pButton
-              pRipple
-              class="p-button-raised p-button-text"
-              (click)="updateDetail()"
-              label="Save"
-              [disabled]="!personForm.valid"
-            ></button>
-          </div>
-          <div class="mx-2 p-order-2 p-col-2">
-            <button
-              pButton
-              pRipple
-              class="p-button-raised p-button-text"
-              type="button"
-              label="Cancel"
-              (click)="cancelEditModal()"
-            ></button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </p-dialog>
 </div>
+<p-dialog
+  header="Edit Person Info"
+  [(visible)]="showEditDialog"
+  [style]="{ width: '50vw' }"
+>
+  <div class="container">
+    <form [formGroup]="personForm">
+      <div class="formgrid grid">
+        <div class="field col my-3">
+          <label class="mr-2" for="firstname2">New First name: </label>
+          <input
+            placeholder="{{ this.personForm.controls['first_name'].value }}"
+            formControlName="first_name"
+            id="firstname2"
+            type="text"
+            class="text-base text-color p-2"
+            pTooltip="Enter New First Name"
+            tooltipPosition="right"
+          />
+        </div>
+
+        <div class="field col my-3">
+          <label class="mr-2" for="lastname2">New Last name: </label>
+          <input
+            formControlName="last_name"
+            id="lastname2"
+            type="text"
+            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+            pTooltip="Enter New Last Name"
+            tooltipPosition="right"
+          />
+        </div>
+        <div class="field col my-3">
+          <label class="mr-2" for="email">New Email: </label>
+          <input
+            formControlName="email"
+            id="email"
+            type="email"
+            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+            pTooltip="Enter New Email"
+            tooltipPosition="right"
+          />
+        </div>
+      </div>
+      <div class="row align-items-center mx-2">
+        <div class="col-7"></div>
+        <div class="col-5">
+          <button
+            pButton
+            pRipple
+            class="p-button-raised p-button-text px-3 py-2 m-2"
+            (click)="updateDetail()"
+            label="Save"
+            [disabled]="!personForm.valid"
+          ></button>
+
+          <button
+            pButton
+            pRipple
+            class="p-button-raised p-button-text px-3 py-2 m-2"
+            type="button"
+            label="Cancel"
+            (click)="cancelPersonDetail()"
+          ></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</p-dialog>
