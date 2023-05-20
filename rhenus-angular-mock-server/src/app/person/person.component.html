@@ -1,25 +1,21 @@
-<div class="container-fluid" style="width: 80%">
+<div class="container-fluid my-5" style="width: 60%">
   <div class="card my-4 p-4">
-    <h5 style="color: rgb(70, 69, 69)">View Person Detail</h5>
+    <h5 style="color: rgb(53, 52, 52)">View Person Detail</h5>
     <div class="formgrid grid">
       <div class="field col">
-        <label for="firstname2">Id: </label>
-        {{ personForm.controls["id"].value }}
+        <span>Id: </span>
+        <b>{{ personForm.controls["id"].value }}</b>
       </div>
       <div class="field col">
-        <label for="firstname2">First Name: </label
-        ><b> {{ personForm.controls["first_name"].value }}</b>
-        <span class="mx-3"> </span>
+        <span>First Name: </span>
+        <b> {{ personForm.controls["first_name"].value }}</b>
       </div>
       <div class="field col">
-        <label for="lastname2">Last Name: </label
-        ><b> {{ personForm.controls["last_name"].value }}</b>
-        <span class="mx-3"> </span>
+        <span>Last Name: </span>
+        <b> {{ personForm.controls["last_name"].value }}</b>
       </div>
       <div class="field col">
-        <label for="email">Email: </label
-        ><b> {{ personForm.controls["email"].value }}</b>
-        <span class="mx-3"> </span>
+        <span>Email: </span><b> {{ personForm.controls["email"].value }}</b>
       </div>
       <div class="row my-2 mx-5 align-items-center">
         <div class="col-2"></div>
