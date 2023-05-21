@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 export const routes: Routes = [
   { path: '', loadChildren: () => import('./people-routing.module').then(m => m.PeopleRoutingModule) },
-  { path: '*', redirectTo: 'people' },
+  { path: '*', redirectTo: '' },
 ];
 
 @NgModule({

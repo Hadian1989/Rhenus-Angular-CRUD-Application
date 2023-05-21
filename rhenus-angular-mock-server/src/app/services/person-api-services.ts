@@ -16,8 +16,8 @@ export class PersonApiServices {
     return this.http.get<IPerson>(this.baseUrl.concat(`/${userId}`));
   }
 
-  addPerson$(person: INewPerson) {
-    return this.http.post(this.baseUrl, person);
+  addPerson$(body: INewPerson) {
+    return this.http.post(this.baseUrl, body);
   }
   updatePerson$(userId: number, body: INewPerson) {
     return this.http.patch(this.baseUrl.concat(`/${userId}`), body);
