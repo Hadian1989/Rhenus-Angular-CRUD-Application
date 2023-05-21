@@ -1,21 +1,22 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { SharedModule } from './module/shared.module';
-import { RoutingModule } from './module/routing.module';
+import { PeopleModule } from './module/people.module';
+import { AppRoutingModule } from './module/app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
+import { UpdatePersonComponent } from './update-person/update-person.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RoutingModule,
-    SharedModule,
+    AppRoutingModule,
+    PeopleModule,
   ],
 
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

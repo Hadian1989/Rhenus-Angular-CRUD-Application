@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IPerson } from '../models/person';
 import { PersonApiServices } from '../services/person-api-services';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-people',
@@ -11,12 +12,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./people.component.css'],
   providers: [MessageService],
 })
-export class PeopleComponent implements OnInit {
+export class PeopleComponent implements OnInit, OnDestroy {
+  isCreateFormSubmitted: any;
   tableColHeader: { header: string }[] = [];
   people!: IPerson[];
+  people$!: Subscription;
   person!: IPerson;
-  selectedPeople!: IPerson[];
   personForm: FormGroup = this.fb.group({
+    id: [''],
     email: [
       '',
       [Validators.required, Validators.email, Validators.maxLength(30)],
@@ -27,7 +30,7 @@ export class PeopleComponent implements OnInit {
     ],
     first_name: [
       '',
-      [Validators.required, Validators.minLength(2), Validators.maxLength(30)],
+      [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
     ],
   });
 
@@ -40,6 +43,10 @@ export class PeopleComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.getPeople();
+    this.showCreateModal = false;
+  }
+  ngOnDestroy(): void {
+    this.people$.unsubscribe();
   }
   ngOnInit(): void {
     this.tableColHeader = [
@@ -52,7 +59,7 @@ export class PeopleComponent implements OnInit {
   }
 
   private getPeople() {
-    this.personApiService.getPeople().subscribe({
+    this.people$ = this.personApiService.getPeople$().subscribe({
       next: (res) => {
         this.people = res;
       },
@@ -68,7 +75,7 @@ export class PeopleComponent implements OnInit {
   }
 
   deletePerson(userId: number) {
-    this.personApiService.deletePerson(userId).subscribe({
+    this.personApiService.deletePerson$(userId).subscribe({
       next: (res) => {
         console.log('delete successfully');
         this.messageService.add({
@@ -88,39 +95,22 @@ export class PeopleComponent implements OnInit {
       },
     });
   }
-  showDialog: boolean = false;
-  showCreateModal() {
-    this.showDialog = true;
+  showCreateModal: boolean = false;
+  openCreateModal() {
+    this.showCreateModal = true;
   }
   cancelCreateModal() {
-    this.showDialog = false;
+    this.showCreateModal = false;
   }
-  publishEvent(action: string, personId?: number) {
-    if (action === 'detail') {
-      this.router.navigate([`/person/${action}/${personId}`]);
-    } else if (action === 'edit') {
-      this.action = action;
-      this.router.navigate([`/person/${action}/${personId}`]);
-    }
+  onClickViewDetail(personId: number) {
+    this.router.navigate([`/person/${personId}`]);
   }
-  createPerson() {
-    let person: IPerson = {
-      first_name: this.personForm.controls['first_name'].value,
-      last_name: this.personForm.controls['last_name'].value,
-      email: this.personForm.controls['email'].value,
-    };
-    this.personApiService.addPerson(person).subscribe({
-      next: (res) => {
-        console.log('create successfully');
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'create successfully',
-        });
-        this.getPeople();
-        this.showDialog = false;
-      },
-      error: (err) => {},
-    });
+  onClickEditDetail(personId: number) {
+    this.router.navigate([`/person/${personId}`]);
+  }
+  onSubmitCreateForm(event: any) {
+    this.isCreateFormSubmitted = event;
+    this.showCreateModal = false;
+    this.getPeople();
   }
 }

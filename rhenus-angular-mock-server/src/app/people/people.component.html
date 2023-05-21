@@ -1,4 +1,4 @@
-<div class=" container-fluid my-2 p-3" style="width: 80%">
+<div class="container-fluid my-2 p-3" style="width: 80%">
   <p-toast></p-toast>
   <div class="container-fluid col-11">
     <div class="mx-auto">
@@ -8,11 +8,12 @@
         </div>
         <div class="col-3 flex align-items-center justify-content-center">
           <p-button
+            data-test="create button"
             pRipple
             styleClass="p-button-raised p-button-text p-button-secondary"
             label="Add New Person"
             icon="pi pi-plus"
-            (onClick)="showCreateModal()"
+            (onClick)="openCreateModal()"
             pTooltip="Create New Person"
             tooltipPosition="right"
           >
@@ -23,6 +24,7 @@
     <!-- Start People List Table -->
     <div class="flex align-items-center justify-content-center">
       <p-table
+        data-test="people"
         [value]="people"
         [paginator]="true"
         [rows]="5"
@@ -40,19 +42,19 @@
             </th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-person>
+        <ng-template pTemplate="body" let-person data-test="people">
           <tr>
             <td>{{ person.id }}</td>
             <td>{{ person.first_name }}</td>
             <td>{{ person.last_name }}</td>
-            <td>{{ person.email }}</td>
+            <td data-test="email">{{ person.email }}</td>
             <td>
               <div class="row align-items-center mx-auto">
                 <div class="col-2 mx-1">
                   <p-button
                     icon="pi pi-user"
                     styleClass="p-button-rounded p-button-text p-button-raised"
-                    (onClick)="publishEvent('detail', person.id)"
+                    (onClick)="onClickViewDetail(person.id)"
                     pTooltip="View more"
                     tooltipPosition="top"
                   >
@@ -62,7 +64,7 @@
                   <p-button
                     icon="pi pi-user-edit"
                     styleClass="p-button-rounded p-button-help p-button-text p-button-raised"
-                    (onClick)="publishEvent('edit', person.id)"
+                    (onClick)="onClickEditDetail(person.id)"
                     pTooltip="Edit"
                     tooltipPosition="top"
                   >
@@ -89,133 +91,10 @@
 <!-- Start Create Person Modal -->
 <p-dialog
   header="Create New person"
-  [(visible)]="showDialog"
+  [(visible)]="showCreateModal"
   [style]="{ width: '50vw' }"
 >
-  <div class="card">
-    <form [formGroup]="personForm">
-      <div class="formgrid grid">
-        <div class="field col my-2">
-          <label class="mr-2" for="firstname2">First name: </label>
-          <input
-            required
-            formControlName="first_name"
-            id="firstname2"
-            type="text"
-            placeholder="First Name"
-            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-          />
-          <div
-            class="p-mt-2"
-            *ngIf="
-              personForm.controls['first_name'].errors &&
-              (personForm.controls['first_name'].touched ||
-                personForm.controls['first_name'].dirty)
-            "
-          >
-            <small
-              class="p-error"
-              *ngIf="personForm.controls['first_name'].hasError('required')"
-              >*This field is required.
-            </small>
-            <small
-              class="p-error"
-              *ngIf="
-                personForm.controls['first_name'].hasError('minlength') ||
-                personForm.controls['first_name'].hasError('maxLength')
-              "
-            >
-              Number of Character should be between 2 to 30
-            </small>
-          </div>
-        </div>
-        <div class="field col my-2">
-          <label class="mr-2" for="lastname2">Last Name: </label>
-          <input
-            required
-            formControlName="last_name"
-            id="lastname2"
-            placeholder="Last Name"
-            type="text"
-            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-          />
-        </div>
-        <div
-          class="p-mt-2"
-          *ngIf="
-            personForm.controls['last_name'].errors &&
-            (personForm.controls['last_name'].touched ||
-              personForm.controls['last_name'].dirty)
-          "
-        >
-          <small
-            class="p-error"
-            *ngIf="personForm.controls['last_name'].hasError('required')"
-          >
-            *This field is required.
-          </small>
-          <small
-            class="p-error"
-            *ngIf="
-              personForm.controls['last_name'].hasError('minlength') ||
-              personForm.controls['last_name'].hasError('maxLength')
-            "
-            >Number of Character should be between 2 to 30
-          </small>
-        </div>
-        <div class="field col my-2">
-          <label class="mr-2" for="email">Email: </label>
-          <input
-            required
-            formControlName="email"
-            id="email"
-            placeholder="Email"
-            type="email"
-            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-          />
-          <div
-            class="p-mt-2"
-            *ngIf="
-              personForm.controls['email'].errors &&
-              (personForm.controls['email'].touched ||
-                personForm.controls['email'].dirty)
-            "
-          >
-            <small
-              class="p-error"
-              *ngIf="personForm.controls['email'].hasError('required')"
-              >*This field is required.
-            </small>
-            <small
-              class="p-error"
-              *ngIf="personForm.controls['email'].hasError('email')"
-              >*Enter email format.
-            </small>
-          </div>
-        </div>
-      </div>
-      <div class="row align-items-center mx-2">
-        <div class="col-7"></div>
-        <div class="col-5">
-        <button
-          pButton
-          pRipple
-          class="p-button-raised p-button-text px-3 py-2 m-2"
-          type="submit"
-          (click)="createPerson()"
-          label="Save"
-          [disabled]="!personForm.valid"
-        ></button>
-        <button
-          pButton
-          pRipple
-          class="p-button-raised p-button-text px-3 py-2 m-2"
-          type="button"
-          label="Cancel"
-          (click)="cancelCreateModal()"
-        ></button>
-      </div></div>
-    </form>
-  </div>
+  <app-create-person (isCreateFormSubmitted)="onSubmitCreateForm($event)">
+  </app-create-person>
 </p-dialog>
 <!-- End Create Person Modal -->

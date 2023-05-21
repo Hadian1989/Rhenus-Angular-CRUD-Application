@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { PeopleComponent } from '../people/people.component';
@@ -6,13 +6,21 @@ import { PersonComponent } from '../person/person.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogModule } from 'primeng/dialog';
-import { RoutingModule } from './routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import { PeopleRoutingModule } from './people-routing.module';
+import { CreatePersonComponent } from '../create-person/create-person.component';
+import { UpdatePersonComponent } from '../update-person/update-person.component';
 
 @NgModule({
-  declarations: [PeopleComponent, PersonComponent],
+  declarations: [
+    PeopleComponent,
+    PersonComponent,
+    CreatePersonComponent,
+    UpdatePersonComponent,
+  ],
   imports: [
     CommonModule,
     ButtonModule,
@@ -20,21 +28,25 @@ import { TooltipModule } from 'primeng/tooltip';
     HttpClientModule,
     ReactiveFormsModule,
     DialogModule,
-    RoutingModule,
+    AppRoutingModule,
     TableModule,
     ToastModule,
-    TooltipModule
+    TooltipModule,
+    PeopleRoutingModule,
   ],
   exports: [
     CommonModule,
     ButtonModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     DialogModule,
+    AppRoutingModule,
     TableModule,
     ToastModule,
-    PersonComponent,
-    TooltipModule
+    TooltipModule,
+    PeopleRoutingModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class SharedModule {}
+export class PeopleModule {}
