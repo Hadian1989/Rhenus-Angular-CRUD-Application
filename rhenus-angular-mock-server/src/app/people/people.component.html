@@ -61,6 +61,7 @@
                   </p-button>
                 </div>
                 <div class="col-2 mx-1">
+                  <p-confirmPopup></p-confirmPopup>
                   <p-button
                     icon="pi pi-user-edit"
                     styleClass="p-button-rounded p-button-help p-button-text p-button-raised"
@@ -74,7 +75,7 @@
                   <p-button
                     icon="pi pi-trash"
                     styleClass="p-button-rounded p-button-danger p-button-text p-button-raised"
-                    (onClick)="deletePerson(person.id)"
+                    (onClick)="deletePerson(person.id, $event)"
                     pTooltip="Delete"
                     tooltipPosition="top"
                   ></p-button>

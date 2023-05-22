@@ -13,12 +13,6 @@
       "id": 2
     },
     {
-      "first_name": "Ghazal",
-      "last_name": "uiuit",
-      "email": "iouioui@dkjgld",
-      "id": 3
-    },
-    {
       "first_name": "Jack",
       "last_name": "Smith",
       "email": "test@gmail.comj",
@@ -101,12 +95,6 @@
       "last_name": "Jilan",
       "email": "hana.jilan@gmail.com",
       "id": 19
-    },
-    {
-      "first_name": "test",
-      "last_name": "test2",
-      "email": "testemail@gmail.com",
-      "id": 20
     }
   ]
 }

@@ -13,6 +13,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { PeopleRoutingModule } from './people-routing.module';
 import { CreatePersonComponent } from '../create-person/create-person.component';
 import { UpdatePersonComponent } from '../update-person/update-person.component';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { UpdatePersonComponent } from '../update-person/update-person.component'
     ToastModule,
     TooltipModule,
     PeopleRoutingModule,
+    ConfirmPopupModule
   ],
   exports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { UpdatePersonComponent } from '../update-person/update-person.component'
     ToastModule,
     TooltipModule,
     PeopleRoutingModule,
+    ConfirmPopupModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   

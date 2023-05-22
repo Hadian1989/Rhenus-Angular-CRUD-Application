@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { IPerson } from '../models/person';
 import { PersonApiServices } from '../services/person-api-services';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-people',
   templateUrl: './people.component.html',
   styleUrls: ['./people.component.css'],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
 })
 export class PeopleComponent implements OnInit {
   isCreateFormSubmitted: any;
@@ -18,7 +18,8 @@ export class PeopleComponent implements OnInit {
   constructor(
     private personApiService: PersonApiServices,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -39,31 +40,45 @@ export class PeopleComponent implements OnInit {
         this.people = res;
       },
       error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'getting person detail was Unsuccessful',
-          });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'getting person detail was Unsuccessful',
+        });
       },
     });
   }
 
-  deletePerson(userId: number) {
-    this.personApiService.deletePerson$(userId).subscribe({
-      next: (res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Delete Successfully',
+  deletePerson(userId: number, event: Event) {
+    this.confirmationService.confirm({
+      target: event.target!,
+      message: 'Are you sure that you want to proceed?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.personApiService.deletePerson$(userId).subscribe({
+          next: (res) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Delete Successfully',
+            });
+            this.getPeople();
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Delete Unsuccessfully',
+            });
+          },
         });
-        this.getPeople();
       },
-      error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Delete Unsuccessfully',
-          });
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
       },
     });
   }
