@@ -28,9 +28,9 @@ describe('PeopleRoutingModule', () => {
   it('should navigate to person with given ID', () => {
     const navigateSpy = spyOn(router, 'navigate');
 
-    router.navigate(['person', '12']);
+    router.navigate(['person', '2']);
 
-    expect(navigateSpy).toHaveBeenCalledWith(['person', '12']);
+    expect(navigateSpy).toHaveBeenCalledWith(['person', '2']);
   });
 
 });
