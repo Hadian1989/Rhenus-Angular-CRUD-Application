@@ -1,0 +1,224 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UpdatePersonComponent } from './update-person.component';
+import { PeopleModule } from '../module/people.module';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { PersonApiServices } from '../services/person-api-services';
+import { of } from 'rxjs';
+import { IPerson } from '../models/person';
+import { PersonComponent } from '../person/person.component';
+
+describe('UpdatePersonComponent', () => {
+  let component: UpdatePersonComponent;
+  let fixture: ComponentFixture<UpdatePersonComponent>;
+  let personApiService: jasmine.SpyObj<PersonApiServices>;
+  let messageService: jasmine.SpyObj<MessageService>;
+  let router: jasmine.SpyObj<Router>;
+  let formBuilder: FormBuilder;
+
+  beforeEach(() => {
+    personApiService = jasmine.createSpyObj('PersonApiServices', [
+      'updatePerson$',
+    ]);
+    messageService = jasmine.createSpyObj('MessageService', ['add']);
+    router = jasmine.createSpyObj('Router', ['navigate']);
+
+    TestBed.configureTestingModule({
+      imports: [PeopleModule],
+      declarations: [UpdatePersonComponent,PersonComponent],
+      providers: [
+        { provide: PersonApiServices, useValue: personApiService },
+        { provide: MessageService, useValue: messageService },
+        { provide: Router, useValue: router },
+        FormBuilder,
+      ],
+    }).compileComponents();
+    personApiService = TestBed.inject(
+      PersonApiServices
+    ) as jasmine.SpyObj<PersonApiServices>;
+    messageService = TestBed.inject(
+      MessageService
+    ) as jasmine.SpyObj<MessageService>;
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    formBuilder = TestBed.inject(FormBuilder);
+    fixture = TestBed.createComponent(UpdatePersonComponent);
+    component = fixture.componentInstance;
+    component.person = new FormBuilder().group({
+      id: ['1'],
+      email: ['test@example.com'],
+      last_name: ['Doe'],
+      first_name: ['John'],
+    });
+    fixture.detectChanges();
+  });
+
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
+
+  // it('should initialize the personForm with correct form controls', () => {
+  //   expect(Number(component.personForm.get(('id')))).toBeTruthy();
+  //   expect(component.personForm.get('email')).toBeTruthy();
+  //   expect(component.personForm.get('last_name')).toBeTruthy();
+  //   expect(component.personForm.get('first_name')).toBeTruthy();
+  // });
+  // it('should initialize the personForm with correct values', () => {
+  //   const formValue = component.personForm.value;
+  //   expect(formValue.id).toBe('1');
+  //   expect(formValue.email).toBe('Doe');
+  //   expect(formValue.first_name).toBe('John');
+  //   expect(formValue.last_name).toBe('test@example.com');
+  // });
+
+  // it('should patch the person values into the form controls', () => {
+  //   expect(component.personForm.get('id')?.value).toBe('1');
+  //   expect(component.personForm.get('email')?.value).toBe('John');
+  //   expect(component.personForm.get('first_name')?.value).toBe('Doe');
+  //   expect(component.personForm.get('last_name')?.value).toBe(
+  //     'example@example.com'
+  //   );
+  // });
+
+  // it('should call the updatePerson$ method when updateDetail is called and navigate to the person detail', () => {
+  //   personApiService.updatePerson$.and.returnValue(of({}));
+
+  //   component.updateDetail();
+
+  //   expect(personApiService.updatePerson$).toHaveBeenCalled();
+  //   expect(component.router.navigate).toHaveBeenCalledWith(['/person/1']);
+  // });
+
+  // it('should emit isEditFormSubmitted event with true when updateDetail is called', () => {
+  //   personApiService.updatePerson$.and.returnValue(of({}));
+  //   spyOn(component.isEditFormSubmitted, 'emit');
+
+  //   component.updateDetail();
+
+  //   expect(component.isEditFormSubmitted.emit).toHaveBeenCalledWith(true);
+  // });
+
+  // it('should reset the personForm when updateDetail is called', () => {
+  //   personApiService.updatePerson$.and.returnValue(of({}));
+
+  //   component.personForm.markAsDirty();
+  //   component.updateDetail();
+
+  //   expect(component.personForm.pristine).toBe(true);
+  // });
+
+  // it('should call the updatePerson$ method and navigate to the person detail on successful update', () => {
+  //   const person: IPerson = {
+  //     id: 1,
+  //     first_name: 'John',
+  //     last_name: 'Doe',
+  //     email: 'test@example.com',
+  //   };
+  //   personApiService.updatePerson$.and.returnValue(of({}));
+
+  //   component.updateDetail();
+
+  //   expect(personApiService.updatePerson$).toHaveBeenCalledWith(person);
+  //   expect(component.isEditFormSubmitted.emit).toHaveBeenCalledWith(true);
+  //   expect(component.personForm.reset).toHaveBeenCalled();
+  //   expect(router.navigate).toHaveBeenCalledWith(['/person/1']);
+  // });
+
+  // it('should display an error message on update error', () => {
+  //   const errorMessage = 'Update failed';
+  //   const errorResponse = new Error(errorMessage);
+  //   personApiService.updatePerson$.and.returnValue(of({ error: errorMessage }));
+
+  //   component.updateDetail();
+
+  //   expect(personApiService.updatePerson$).toHaveBeenCalled();
+  //   expect(messageService.add).toHaveBeenCalledWith({
+  //     severity: 'error',
+  //     summary: 'Error',
+  //     detail: errorMessage,
+  //   });
+  // });
+
+  // it('should call the cancelPersonDetail method and navigate to the person detail', () => {
+  //   component.cancelPersonDetail();
+
+  //   expect(component.isEditFormSubmitted.emit).toHaveBeenCalledWith(true);
+  //   expect(component.personForm.reset).toHaveBeenCalled();
+  //   expect(router.navigate).toHaveBeenCalledWith(['/person/1']);
+  // });
+  // it('should have a form with formGroup directive', () => {
+  //   expect(formGroup).toBeTruthy();
+  // });
+
+  // it('should display the "New First name" input field', () => {
+  //   const firstNameInput = formGroup.query(
+  //     By.css('input[formControlName="first_name"]')
+  //   );
+  //   expect(firstNameInput).toBeTruthy();
+  // });
+
+  // it('should display the "New Last name" input field', () => {
+  //   const lastNameInput = formGroup.query(
+  //     By.css('input[formControlName="last_name"]')
+  //   );
+  //   expect(lastNameInput).toBeTruthy();
+  // });
+
+  // it('should display the "New Email" input field', () => {
+  //   const emailInput = formGroup.query(
+  //     By.css('input[formControlName="email"]')
+  //   );
+  //   expect(emailInput).toBeTruthy();
+  // });
+
+  // it('should disable the "Save" button when the form is invalid', () => {
+  //   component.personForm.controls['first_name'].setValue('John');
+  //   component.personForm.controls['last_name'].setValue('Doe');
+  //   component.personForm.controls['email'].setValue('johndoe@example.com');
+  //   fixture.detectChanges();
+
+  //   const saveButton = formGroup.query(
+  //     By.css('button[test-data="update-button"]')
+  //   ).nativeElement;
+  //   expect(saveButton.disabled).toBe(true);
+  // });
+
+  // it('should enable the "Save" button when the form is valid', () => {
+  //   component.personForm.controls['first_name'].setValue('John');
+  //   component.personForm.controls['last_name'].setValue('Doe');
+  //   component.personForm.controls['email'].setValue('johndoe@example.com');
+  //   component.personForm.markAllAsTouched();
+  //   fixture.detectChanges();
+
+  //   const saveButton = formGroup.query(
+  //     By.css('button[test-data="update-button"]')
+  //   ).nativeElement;
+  //   expect(saveButton.disabled).toBe(false);
+  // });
+
+  // it('should call the updateDetail method when the "Save" button is clicked', () => {
+  //   spyOn(component, 'updateDetail');
+  //   const saveButton = formGroup.query(
+  //     By.css('button[test-data="update-button"]')
+  //   ).nativeElement;
+
+  //   saveButton.click();
+  //   fixture.detectChanges();
+
+  //   expect(component.updateDetail).toHaveBeenCalled();
+  // });
+
+  // it('should call the cancelPersonDetail method when the "Cancel" button is clicked', () => {
+  //   spyOn(component, 'cancelPersonDetail');
+  //   const cancelButton = formGroup.query(
+  //     By.css('button[test-data="cancel-button"]')
+  //   ).nativeElement;
+
+  //   cancelButton.click();
+  //   fixture.detectChanges();
+
+  //   expect(component.cancelPersonDetail).toHaveBeenCalled();
+  // });
+});

@@ -1,10 +1,10 @@
 <div class="container">
-  <form [formGroup]="personForm">
+  <p-toast></p-toast>
+  <form [formGroup]="personForm" test-data="update-form">
     <div class="formgrid grid">
       <div class="field col my-3">
         <label class="mr-2" for="firstname2">New First name: </label>
         <input
-        style="color: black;"
           placeholder="{{ this.personForm.controls['first_name'].value }}"
           formControlName="first_name"
           id="firstname2"
@@ -15,6 +15,7 @@
         />
       </div>
       <div
+        test-data="first-name-error"
         class="p-mt-2"
         *ngIf="
           personForm.controls['first_name'].errors &&
@@ -31,7 +32,7 @@
           >Number of Character should be between 2 to 20
         </small>
       </div>
-      <div class="field col my-3">
+      <div class="field col my-3" test-data="last-name-input">
         <label class="mr-2" for="lastname2">New Last name: </label>
         <input
           formControlName="last_name"
@@ -43,6 +44,7 @@
         />
       </div>
       <div
+        test-data="last-name-error"
         class="p-mt-2"
         *ngIf="
           personForm.controls['last_name'].errors &&
@@ -59,7 +61,7 @@
           >Number of Character should be between 2 to 20
         </small>
       </div>
-      <div class="field col my-3">
+      <div class="field col my-3" test-data="email-input">
         <label class="mr-2" for="email">New Email: </label>
         <input
           formControlName="email"
@@ -71,6 +73,7 @@
         />
       </div>
       <div
+        test-data="email-error"
         class="p-mt-2"
         *ngIf="
           personForm.controls['email'].errors &&
@@ -94,6 +97,7 @@
       <div class="col-7"></div>
       <div class="col-5">
         <button
+          test-data="update-button"
           pButton
           pRipple
           class="p-button-raised p-button-text px-3 py-2 m-2"
@@ -103,6 +107,7 @@
         ></button>
 
         <button
+          test-data="cancel-button"
           pButton
           pRipple
           class="p-button-raised p-button-text px-3 py-2 m-2"

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AppRoutingModule } from './app-routing.module';
 
-fdescribe('AppRoutingModule', () => {
+describe('AppRoutingModule', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppRoutingModule],

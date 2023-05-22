@@ -1,74 +1,280 @@
 import { TestBed } from '@angular/core/testing';
 import {
-  HttpTestingController,
   HttpClientTestingModule,
+  HttpTestingController,
 } from '@angular/common/http/testing';
 import { PersonApiServices } from './person-api-services';
-import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
+import { INewPerson, IPerson } from '../models/person';
 
-fdescribe('PersonApiService', () => {
-  let personApiServices: PersonApiServices;
-  let httpClient: HttpClient;
-  let httpTestingController: HttpTestingController;
+describe('PersonApiService', () => {
+  let service: PersonApiServices;
+  let httpMock: HttpTestingController;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [PersonApiServices],
     });
-    httpTestingController = TestBed.inject(HttpTestingController);
-    const service = TestBed.inject(PersonApiServices);
+
+    service = TestBed.inject(PersonApiServices);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('should the list of people', () => {
-    // Spy on and mock the HttpClient.
-    httpClient = TestBed.get(HttpClient);
-    const peopleMock = [
+  afterEach(() => {
+    httpMock.verify();
+  });
+
+  it('should send a POST request with correct data', () => {
+    const mockData = {
+      first_name: 'John ',
+      last_name: ' Doe',
+      email: 'johndoe@example.com',
+    };
+
+    service.addPerson$(mockData).subscribe((response) => {
+      expect(response).toBeTruthy();
+      expect(response).toEqual({ message: 'Data successfully posted' });
+    });
+
+    const request = httpMock.expectOne('/api/people');
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual(mockData);
+
+    request.flush({ message: 'Data successfully posted' });
+  });
+
+  it('should handle errors', () => {
+    const mockData: INewPerson = {
+      first_name: 'John ',
+      last_name: ' Doe',
+      email: 'johndoe@example.com',
+    };
+
+    service.addPerson$(mockData).subscribe(
+      (response) => fail('Should have failed with an error'),
+      (error) => {
+        expect(error.status).toBe(500);
+        expect(error.error).toEqual({ message: 'Internal server error' });
+      }
+    );
+
+    const request = httpMock.expectOne('/api/people');
+    request.flush(
+      { message: 'Internal server error' },
+      { status: 500, statusText: 'Internal Server Error' }
+    );
+  });
+
+  it('should retrieve a list of persons', () => {
+    const mockResponse: IPerson[] = [
       {
         id: 1,
-        first_name: 'Jack',
-        last_name: 'Schulz',
-        email: 'jack.schultz@gmail.com',
+        first_name: 'John ',
+        last_name: ' Doe',
+        email: 'johndoe@example.com',
       },
       {
-        first_name: 'jack2',
-        last_name: 'schultz2',
-        email: 'jack2.schultz2@gmail.com',
         id: 2,
+        first_name: 'John2 ',
+        last_name: ' Doe2',
+        email: 'johndoe2@example.com',
       },
       {
-        first_name: 'Math',
-        last_name: 'Henkler',
-        email: 'math.henkler@gmail.com',
         id: 3,
-      },
-      {
-        first_name: 'jafar',
-        last_name: 'jafarlast',
-        email: 'jafa@gmail.com',
-        id: 4,
-      },
-      {
-        first_name: 'Jack34',
-        last_name: 'Smith',
-        email: 'jack.smith@gmail.com',
-        id: 5,
-      },
-      {
-        first_name: 'Ghazaleh',
-        last_name: 'Hadian',
-        email: 'ghazal@gmail.com',
-        id: 6,
+        first_name: 'John3 ',
+        last_name: ' Doe3',
+        email: 'johndoe3@example.com',
       },
     ];
-    spyOn(httpClient, 'get').and.returnValue(of(peopleMock));
-    // Use our service to get homes.
-    personApiServices = TestBed.get(PersonApiServices);
-    const spy = jasmine.createSpy('spy');
-    personApiServices.getPeople$().subscribe(spy);
-    // Verify that the service returned mocked data.
-    expect(spy).toHaveBeenCalledWith(peopleMock);
-    // Verify that the service called the proper HTTP endpoint.
-    expect(httpClient.get).toHaveBeenCalledWith('/api/people')
+
+    service.getPeople$().subscribe((response) => {
+      expect(response).toBeTruthy();
+      expect(response.length).toBe(3);
+      expect(response).toEqual(mockResponse);
+    });
+
+    const request = httpMock.expectOne('/api/people');
+    expect(request.request.method).toBe('GET');
+
+    request.flush(mockResponse);
+  });
+
+  it('should handle errors', () => {
+    service.getPeople$().subscribe(
+      (response) => fail('Should have failed with an error'),
+      (error) => {
+        expect(error.status).toBe(500);
+        expect(error.error).toEqual({ message: 'Internal server error' });
+      }
+    );
+
+    const request = httpMock.expectOne('/api/people');
+    request.flush(
+      { message: 'Internal server error' },
+      { status: 500, statusText: 'Internal Server Error' }
+    );
+  });
+
+  it('should retrieve a list of persons', () => {
+    const mockResponse: IPerson[] = [
+      {
+        id: 1,
+        first_name: 'John ',
+        last_name: ' Doe',
+        email: 'johndoe@example.com',
+      },
+      {
+        id: 2,
+        first_name: 'John2 ',
+        last_name: ' Doe2',
+        email: 'johndoe2@example.com',
+      },
+      {
+        id: 3,
+        first_name: 'John3 ',
+        last_name: ' Doe3',
+        email: 'johndoe3@example.com',
+      },
+    ];
+
+    service.getPeople$().subscribe((response) => {
+      expect(response).toBeTruthy();
+      expect(response.length).toBe(3);
+      expect(response).toEqual(mockResponse);
+    });
+
+    const request = httpMock.expectOne('/api/people');
+    expect(request.request.method).toBe('GET');
+
+    request.flush(mockResponse);
+  });
+
+  it('should handle errors', () => {
+    service.getPeople$().subscribe(
+      (response) => fail('Should have failed with an error'),
+      (error) => {
+        expect(error.status).toBe(500);
+        expect(error.error).toEqual({ message: 'Internal server error' });
+      }
+    );
+
+    const request = httpMock.expectOne('/api/people');
+    request.flush(
+      { message: 'Internal server error' },
+      { status: 500, statusText: 'Internal Server Error' }
+    );
+  });
+
+  it('should delete a person', () => {
+    const personId = 1;
+
+    service.deletePerson$(personId).subscribe((response) => {
+      expect(response).toBeTruthy();
+      expect(response).toEqual({ message: 'person successfully deleted' });
+    });
+
+    const request = httpMock.expectOne(`/api/people/${personId}`);
+    expect(request.request.method).toBe('DELETE');
+
+    request.flush({ message: 'person successfully deleted' });
+  });
+
+  it('should handle errors', () => {
+    const personId = 1;
+
+    service.deletePerson$(personId).subscribe(
+      (response) => fail('Should have failed with an error'),
+      (error) => {
+        expect(error.status).toBe(500);
+        expect(error.error).toEqual({ message: 'Internal server error' });
+      }
+    );
+
+    const request = httpMock.expectOne(`/api/people/${personId}`);
+    request.flush(
+      { message: 'Internal server error' },
+      { status: 500, statusText: 'Internal Server Error' }
+    );
+  });
+
+  it('should update an object', () => {
+    const updatedObject: IPerson = {
+      id: 1,
+      first_name: 'John-new',
+      last_name: 'Doe-new',
+      email: 'johndoe@example.com',
+    };
+
+    service.updatePerson$(updatedObject).subscribe((response) => {
+      expect(response).toBeTruthy();
+      expect(response).toEqual({ message: 'Person successfully updated' });
+    });
+
+    const request = httpMock.expectOne(`/api/people/${updatedObject.id}`);
+    expect(request.request.method).toBe('PATCH');
+    expect(request.request.body).toEqual(updatedObject);
+
+    request.flush({ message: 'Person successfully updated' });
+  });
+
+  it('should handle errors', () => {
+    const updatedObject: IPerson = {
+      id: 1,
+      first_name: 'John-new',
+      last_name: 'Doe-new',
+      email: 'johndoe@example.com',
+    };
+
+    service.updatePerson$(updatedObject).subscribe(
+      (response) => fail('Should have failed with an error'),
+      (error) => {
+        expect(error.status).toBe(500);
+        expect(error.error).toEqual({ message: 'Internal server error' });
+      }
+    );
+
+    const request = httpMock.expectOne(`/api/people/${updatedObject.id}`);
+    request.flush(
+      { message: 'Internal server error' },
+      { status: 500, statusText: 'Internal Server Error' }
+    );
+  });
+
+  it('should retrieve a person', () => {
+    const objectId = 1;
+    const mockResponse = {
+      id: 1,
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'johndoe@example.com',
+    };
+
+    service.getPersonDetail$(objectId).subscribe((response) => {
+      expect(response).toBeTruthy();
+      expect(response).toEqual(mockResponse);
+    });
+
+    const request = httpMock.expectOne(`/api/people/${objectId}`);
+    expect(request.request.method).toBe('GET');
+
+    request.flush(mockResponse);
+  });
+
+  it('should handle errors', () => {
+    const objectId = 1;
+
+    service.getPersonDetail$(objectId).subscribe(
+      (response) => fail('Should have failed with an error'),
+      (error) => {
+        expect(error.status).toBe(500);
+        expect(error.error).toEqual({ message: 'Internal server error' });
+      }
+    );
+
+    const request = httpMock.expectOne(`/api/people/${objectId}`);
+    request.flush(
+      { message: 'Internal server error' },
+      { status: 500, statusText: 'Internal Server Error' }
+    );
   });
 });

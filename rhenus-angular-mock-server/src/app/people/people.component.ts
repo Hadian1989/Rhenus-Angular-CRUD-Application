@@ -1,10 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IPerson } from '../models/person';
 import { PersonApiServices } from '../services/person-api-services';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-people',
@@ -12,43 +10,20 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./people.component.css'],
   providers: [MessageService],
 })
-export class PeopleComponent implements OnInit, OnDestroy {
+export class PeopleComponent implements OnInit {
   isCreateFormSubmitted: any;
   tableColHeader: { header: string }[] = [];
-  people!: IPerson[];
-  people$!: Subscription;
-  person!: IPerson;
-  personForm: FormGroup = this.fb.group({
-    id: [''],
-    email: [
-      '',
-      [Validators.required, Validators.email, Validators.maxLength(30)],
-    ],
-    last_name: [
-      '',
-      [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
-    ],
-    first_name: [
-      '',
-      [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
-    ],
-  });
-
-  action!: string;
+  people: IPerson[] = [];
 
   constructor(
     private personApiService: PersonApiServices,
     private router: Router,
-    private messageService: MessageService,
-    private fb: FormBuilder
-  ) {
+    private messageService: MessageService
+  ) {}
+
+  ngOnInit(): void {
     this.getPeople();
     this.showCreateModal = false;
-  }
-  ngOnDestroy(): void {
-    this.people$.unsubscribe();
-  }
-  ngOnInit(): void {
     this.tableColHeader = [
       { header: 'ID' },
       { header: 'First Name' },
@@ -58,17 +33,16 @@ export class PeopleComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private getPeople() {
-    this.people$ = this.personApiService.getPeople$().subscribe({
+  getPeople() {
+    this.personApiService.getPeople$().subscribe({
       next: (res) => {
         this.people = res;
       },
       error: (err) => {
-        console.log(err),
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: err,
+            detail: 'Delete Unsuccessfully',
           });
       },
     });
@@ -77,7 +51,6 @@ export class PeopleComponent implements OnInit, OnDestroy {
   deletePerson(userId: number) {
     this.personApiService.deletePerson$(userId).subscribe({
       next: (res) => {
-        console.log('delete successfully');
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -86,11 +59,10 @@ export class PeopleComponent implements OnInit, OnDestroy {
         this.getPeople();
       },
       error: (err) => {
-        console.log(err),
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: err,
+            detail: 'Delete Unsuccessfully',
           });
       },
     });

@@ -48,5 +48,6 @@ import { UpdatePersonComponent } from '../update-person/update-person.component'
     PeopleRoutingModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  
 })
 export class PeopleModule {}

@@ -3,6 +3,7 @@ import { PersonApiServices } from '../services/person-api-services';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-person',
@@ -12,8 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class PersonComponent implements OnInit {
   showEditDialog!: boolean;
-  apiAction: string = '';
-  id_quary: number = 0;
+  id_quary: number;
   personForm: FormGroup = this.fb.group({
     id: [''],
     email: ['', Validators.required],
@@ -28,7 +28,7 @@ export class PersonComponent implements OnInit {
     private fb: FormBuilder,
     private messageService: MessageService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -52,15 +52,15 @@ export class PersonComponent implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: err,
+            detail: 'Error getting person detail',
           });
       },
     });
   }
   deletePerson() {
     this.personApiService.deletePerson$(this.id_quary).subscribe({
-      next: (res) => {
-        console.log('delete successfully');
+      next: (res:{}) => {
+        
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -68,13 +68,12 @@ export class PersonComponent implements OnInit {
         });
         this.returnToPeopleListPage();
       },
-      error: (err) => {
-        console.log(err),
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: err,
-          });
+      error: (err:HttpErrorResponse) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'delete unsuccessfully',
+        });
       },
     });
   }
