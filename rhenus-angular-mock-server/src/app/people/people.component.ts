@@ -42,7 +42,7 @@ export class PeopleComponent implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Delete Unsuccessfully',
+            detail: 'getting person detail was Unsuccessful',
           });
       },
     });
@@ -54,7 +54,7 @@ export class PeopleComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'delete successfully',
+          detail: 'Delete Successfully',
         });
         this.getPeople();
       },

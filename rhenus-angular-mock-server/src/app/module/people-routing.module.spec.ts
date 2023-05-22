@@ -33,5 +33,4 @@ describe('PeopleRoutingModule', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['person', '12']);
   });
 
-  // Add more test cases for other routes and components
 });

@@ -13,18 +13,18 @@ export class PersonApiServices {
   getPeople$(): Observable<IPerson[]> {
     return this.http.get<IPerson[]>(this.baseUrl);
   }
-  getPersonDetail$(userId: number): Observable<IPerson> {
-    return this.http.get<IPerson>(this.baseUrl.concat(`/${userId}`));
+  getPersonDetail$(personId: number): Observable<IPerson> {
+    return this.http.get<IPerson>(this.baseUrl.concat(`/${personId}`));
   }
 
   addPerson$(body: INewPerson) {
     return this.http.post(this.baseUrl, body);
   }
   updatePerson$(body: IPerson) {
-    let userId: number = body['id'];
-    return this.http.patch(this.baseUrl.concat(`/${userId}`), body);
+    let personId: number = body['id'];
+    return this.http.patch(this.baseUrl.concat(`/${personId}`), body);
   }
-  deletePerson$(userId: number) {
-    return this.http.delete(this.baseUrl.concat(`/${userId}`));
+  deletePerson$(personId: number) {
+    return this.http.delete(this.baseUrl.concat(`/${personId}`));
   }
 }

@@ -108,4 +108,5 @@ describe('PeopleComponent', () => {
       `/person/${mockPersonId}`,
     ]);
   });
+  
 });

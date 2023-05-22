@@ -4,7 +4,6 @@ import { AppComponent } from './app.component';
 import { PeopleModule } from './module/people.module';
 import { AppRoutingModule } from './module/app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UpdatePersonComponent } from './update-person/update-person.component';
 
 @NgModule({
   declarations: [AppComponent, ],

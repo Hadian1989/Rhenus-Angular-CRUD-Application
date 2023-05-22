@@ -86,7 +86,7 @@ describe('PersonComponent', () => {
   it('should display error message on delete person failure', () => {
     const personId = 1;
     const errorMessage = 'Error deleting person';
-    personApiServiceSpy.deletePerson$.and.returnValue(of({errorMessage}));
+    personApiServiceSpy.deletePerson$.and.returnValue(of({ errorMessage }));
     component.deletePerson();
     expect(personApiServiceSpy.deletePerson$).toHaveBeenCalledWith(personId);
   });
