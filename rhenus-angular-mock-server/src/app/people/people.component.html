@@ -1,5 +1,4 @@
 <div class="container-fluid my-2 p-3" style="width: 80%">
-  <p-toast></p-toast>
   <div class="container-fluid col-11">
     <div class="mx-auto">
       <div class="flex row my-3 g-5 gy-2 align-items-center">
@@ -45,9 +44,9 @@
         <ng-template pTemplate="body" let-person data-test="people">
           <tr>
             <td>{{ person.id }}</td>
-            <td>{{ person.first_name }}</td>
-            <td>{{ person.last_name }}</td>
-            <td data-test="email">{{ person.email }}</td>
+            <td>{{ person.first_name | titlecase }}</td>
+            <td>{{ person.last_name | titlecase }}</td>
+            <td>{{ person.email | lowercase }}</td>
             <td>
               <div class="row align-items-center mx-auto">
                 <div class="col-2 mx-1">
@@ -61,7 +60,6 @@
                   </p-button>
                 </div>
                 <div class="col-2 mx-1">
-                  <p-confirmPopup></p-confirmPopup>
                   <p-button
                     icon="pi pi-user-edit"
                     styleClass="p-button-rounded p-button-help p-button-text p-button-raised"
@@ -99,3 +97,11 @@
   </app-create-person>
 </p-dialog>
 <!-- End Create Person Modal -->
+
+<!-- Start confirm popup -->
+<p-confirmPopup></p-confirmPopup>
+<!-- End confirm popup -->
+
+<!-- Start toast -->
+<p-toast></p-toast>
+<!-- End toast -->

@@ -1,43 +1,43 @@
 <!-- Show Person Info Start -->
-<div class="container-fluid my-5" style="width: 60%">
+<div class="container-fluid my-5" style="width: 50%">
   <div class="card my-4 p-4">
     <h5 style="color: rgb(53, 52, 52)">View Person Detail</h5>
     <div class="formgrid grid">
       <div class="field col">
-        <span>Id: </span>
+        <span style="padding-right: 10px;">Id: </span>
         <b>{{ personForm.controls["id"].value }}</b>
       </div>
       <div class="field col">
-        <span>First Name: </span>
-        <b> {{ personForm.controls["first_name"].value }}</b>
+        <span style="padding-right: 10px;">First Name: </span>
+        <b> {{ personForm.controls["first_name"].value | titlecase }}</b>
       </div>
       <div class="field col">
-        <span>Last Name: </span>
-        <b> {{ personForm.controls["last_name"].value }}</b>
+        <span style="padding-right: 10px;">Last Name: </span>
+        <b> {{ personForm.controls["last_name"].value | titlecase}}</b>
       </div>
       <div class="field col">
-        <span>Email: </span><b> {{ personForm.controls["email"].value }}</b>
+        <span style="padding-right: 10px;">Email: </span><b> {{ personForm.controls["email"].value | lowercase }}</b>
       </div>
       <div class="row my-2 mx-5 align-items-center">
         <div class="col-2"></div>
-        <div class="col-8 align-items-center align-self-center">
+        <div class="col-l-8 col-m-12 align-items-center align-self-center">
           <p-button
             label="Edit"
             icon="pi pi-user-edit"
             (onClick)="editPersonDetail()"
-            styleClass="p-button-raised p-button-text p-button-warning px-3 py-2 m-3"
+            styleClass="p-button-raised p-button-text p-button-warning px-3 py-2 m-lg-3 m-md-2 m-sm-1"
           ></p-button>
           <p-button
             label="Delete"
             icon="pi pi-trash"
             (onClick)="deletePerson()"
-            styleClass="p-button-raised p-button-text p-button-danger px-3 py-2 m-3"
+            styleClass="p-button-raised p-button-text p-button-danger px-3 py-2 m-lg-3 m-md-2 m-sm-1"
           ></p-button>
 
           <p-button
             label="People List"
             icon="pi pi-users"
-            styleClass="p-button-raised p-button-text px-3 py-2 m-3"
+            styleClass="p-button-raised p-button-text px-3 py-2 m-lg-3 m-md-2 m-sm-1"
             (onClick)="returnToPeopleListPage()"
           ></p-button>
         </div>
@@ -53,9 +53,16 @@
   [style]="{ width: '50vw' }"
 >
   <app-update-person
-    (isEditFormSubmitted)="onSubmitEditForm($event)"
+    (isEditingFormFinished)="onSubmitEditForm($event)"
     [person]="this.personForm"
   >
   </app-update-person>
 </p-dialog>
 <!-- Edit Info End -->
+
+<!-- Start toast -->
+<p-toast></p-toast>
+<!-- End toast -->
+
+
+

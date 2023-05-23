@@ -3,6 +3,12 @@
   <form [formGroup]="personForm" test-data="update-form">
     <div class="formgrid grid">
       <div class="field col my-3">
+        <div>
+          <label class="mr-2" for="firstname2">Old First name: </label>
+          <span>{{
+            this.person.controls["first_name"].value | titlecase
+          }}</span>
+        </div>
         <label class="mr-2" for="firstname2">New First name: </label>
         <input
           placeholder="{{ this.personForm.controls['first_name'].value }}"
@@ -33,6 +39,10 @@
         </small>
       </div>
       <div class="field col my-3" test-data="last-name-input">
+        <div>
+          <label class="mr-2" for="lastname2">Old Last name: </label>
+          <span>{{ this.person.controls["last_name"].value | titlecase }}</span>
+        </div>
         <label class="mr-2" for="lastname2">New Last name: </label>
         <input
           formControlName="last_name"
@@ -62,6 +72,10 @@
         </small>
       </div>
       <div class="field col my-3" test-data="email-input">
+        <div>
+          <label class="mr-2" for="email2">Old Email: </label>
+          <span>{{ this.person.controls["email"].value | uppercase}}</span>
+        </div>
         <label class="mr-2" for="email">New Email: </label>
         <input
           formControlName="email"

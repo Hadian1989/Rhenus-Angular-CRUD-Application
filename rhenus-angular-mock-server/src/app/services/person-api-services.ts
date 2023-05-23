@@ -20,7 +20,7 @@ export class PersonApiServices {
   addPerson$(body: INewPerson) {
     return this.http.post(this.baseUrl, body);
   }
-  updatePerson$(body: IPerson) {
+  updatePerson$(body:{}) {
     let personId: number = body['id'];
     return this.http.patch(this.baseUrl.concat(`/${personId}`), body);
   }

@@ -6,7 +6,6 @@ import { PersonApiServices } from '../services/person-api-services';
 import { MessageService } from 'primeng/api';
 import { Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { PeopleModule } from '../module/people.module';
 
 describe('UpdatePersonComponent', () => {
   let component: UpdatePersonComponent;
@@ -58,13 +57,13 @@ describe('UpdatePersonComponent', () => {
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
-  it('should call the cancelPersonDetail method and navigate to the person detail', () => {
-    spyOn(component.isEditFormSubmitted, 'emit');
+  it('should call the cancelPersonDetail method and navigate to the person view', () => {
+    spyOn(component.isEditingFormFinished, 'emit');
     spyOn(component.personForm, 'reset');
 
     component.cancelPersonDetail();
 
-    expect(component.isEditFormSubmitted.emit).toHaveBeenCalledWith(true);
+    expect(component.isEditingFormFinished.emit).toHaveBeenCalledWith(true);
     expect(component.personForm.reset).toHaveBeenCalled();
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/person/1']);
   });
@@ -79,12 +78,12 @@ describe('UpdatePersonComponent', () => {
   });
 
   it('should emit isEditFormSubmitted event and reset form on cancelPersonDetail', () => {
-    spyOn(component.isEditFormSubmitted, 'emit');
+    spyOn(component.isEditingFormFinished, 'emit');
     spyOn(component.personForm, 'reset');
 
     component.cancelPersonDetail();
 
-    expect(component.isEditFormSubmitted.emit).toHaveBeenCalledWith(true);
+    expect(component.isEditingFormFinished.emit).toHaveBeenCalledWith(true);
     expect(component.personForm.reset).toHaveBeenCalled();
   });
 
@@ -103,12 +102,12 @@ describe('UpdatePersonComponent', () => {
   it('should emit isEditFormSubmitted event and reset form on successful update', () => {
     personApiServiceSpy.updatePerson$.and.returnValue(of({}));
 
-    spyOn(component.isEditFormSubmitted, 'emit');
+    spyOn(component.isEditingFormFinished, 'emit');
     spyOn(component.personForm, 'reset');
 
     component.updateDetail();
 
-    expect(component.isEditFormSubmitted.emit).toHaveBeenCalledWith(true);
+    expect(component.isEditingFormFinished.emit).toHaveBeenCalledWith(true);
     expect(component.personForm.reset).toHaveBeenCalled();
   });
   it('should navigate to person detail page on successful update', () => {

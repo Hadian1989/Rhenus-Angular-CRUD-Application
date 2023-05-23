@@ -7,18 +7,24 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { INewPerson } from '../models/person';
 import { PeopleModule } from '../module/people.module';
+import { MessageService } from 'primeng/api';
 
 describe('CreatePersonComponent', () => {
   let component: CreatePersonComponent;
   let fixture: ComponentFixture<CreatePersonComponent>;
   let personApiService: PersonApiServices;
   let router: Router;
+  let messageService: jasmine.SpyObj<MessageService>;
 
   beforeEach(async () => {
+    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,PeopleModule],
+      imports: [RouterTestingModule, PeopleModule],
       declarations: [CreatePersonComponent],
-      providers: [PersonApiServices],
+      providers: [
+        PersonApiServices,
+        { provide: MessageService, useValue: messageServiceSpy },
+      ],
     }).compileComponents();
   });
 

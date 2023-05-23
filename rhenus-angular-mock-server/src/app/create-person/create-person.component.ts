@@ -3,17 +3,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PersonApiServices } from '../services/person-api-services';
 import { Router } from '@angular/router';
 import { INewPerson, IPerson } from '../models/person';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-create-person',
   templateUrl: './create-person.component.html',
   styleUrls: ['./create-person.component.css'],
 })
-export class CreatePersonComponent implements OnInit {
+export class CreatePersonComponent {
   @Output() isCreateFormSubmitted = new EventEmitter<boolean>();
-  people!: IPerson[];
-  person!: IPerson;
-  selectedPeople!: IPerson[];
+  showCreateModal: boolean;
+  people: IPerson[];
   personForm: FormGroup = this.fb.group({
     id: [''],
     email: [
@@ -29,27 +29,38 @@ export class CreatePersonComponent implements OnInit {
       [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
     ],
   });
-  showCreateModal: boolean | undefined;
   constructor(
     private personApiService: PersonApiServices,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private messageService: MessageService
   ) {}
-  ngOnInit(): void {}
+ 
   createPerson() {
-    let person:INewPerson = {
+    let person: INewPerson = {
       first_name: this.personForm.controls['first_name'].value,
       last_name: this.personForm.controls['last_name'].value,
       email: this.personForm.controls['email'].value,
     };
     this.personApiService.addPerson$(person).subscribe({
-      next: (res) => {
-        console.log('create successfully');
+      next: (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Create Successfully',
+        });
         this.isCreateFormSubmitted.emit(true);
         this.personForm.reset();
+
         this.router.navigate(['']);
       },
-      error: (err) => {},
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Create Unsuccessfully',
+        });
+      },
     });
   }
   cancelCreateModal() {

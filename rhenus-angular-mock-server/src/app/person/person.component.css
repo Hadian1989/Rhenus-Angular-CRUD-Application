@@ -1,0 +1,12 @@
+span {
+  display: inline-block;
+}
+span::first-letter {
+  text-transform: uppercase;
+}
+b {
+  display: inline-block;
+}
+b::first-letter {
+  text-transform: uppercase;
+}

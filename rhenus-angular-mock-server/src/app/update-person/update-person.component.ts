@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PersonApiServices } from '../services/person-api-services';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IPerson } from '../models/person';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,8 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./update-person.component.css'],
 })
 export class UpdatePersonComponent implements OnInit {
-  @Output() isEditFormSubmitted = new EventEmitter<boolean>();
-  @Input() person!: FormGroup;
+  @Output() isEditingFormFinished = new EventEmitter<boolean>();
+  @Input() person: FormGroup;
   personForm: FormGroup = this.fb.group({
     id: [''],
     email: ['', [Validators.email, Validators.maxLength(30)]],
@@ -26,7 +25,7 @@ export class UpdatePersonComponent implements OnInit {
     private router: Router
   ) {}
   ngOnInit(): void {
-    this.personForm.patchValue({
+    this.personForm.setValue({
       id: this.person.controls['id'].value,
       first_name: this.person.controls['first_name'].value,
       last_name: this.person.controls['last_name'].value,
@@ -34,32 +33,36 @@ export class UpdatePersonComponent implements OnInit {
     });
   }
   updateDetail() {
-    let person: IPerson = {
-      id: this.personForm.controls['id'].value,
-      first_name: this.personForm.controls['first_name'].value,
-      last_name: this.personForm.controls['last_name'].value,
-      email: this.personForm.controls['email'].value,
-    };
+    let updated_person = {};
+    Object.keys(this.personForm.controls).forEach((control) => {
+      if (this.personForm.get(control).value) {
+        updated_person[control] = this.personForm.get(control).value;
+      }
+    });
+    updated_person['id'] = this.person.get('id').value;
 
-    this.personApiService.updatePerson$(person).subscribe({
+    this.personApiService.updatePerson$(updated_person).subscribe({
       next: (res) => {
-        console.log('update successfully');
-        this.isEditFormSubmitted.emit(true);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Update Successfully',
+        });
+        this.isEditingFormFinished.emit(true);
         this.personForm.reset();
         this.router.navigate([`/person/${this.person.controls['id'].value}`]);
       },
       error: (err) => {
-        console.log(err),
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: err,
-          });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err,
+        });
       },
     });
   }
   cancelPersonDetail() {
-    this.isEditFormSubmitted.emit(true);
+    this.isEditingFormFinished.emit(true);
     this.personForm.reset();
     this.router.navigate([`/person/${this.person.controls['id'].value}`]);
   }

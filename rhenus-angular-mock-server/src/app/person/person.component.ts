@@ -12,7 +12,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
   providers: [MessageService],
 })
 export class PersonComponent implements OnInit {
-  showEditDialog!: boolean;
+  showEditDialog: boolean;
   id_quary: number;
   personForm: FormGroup = this.fb.group({
     id: [''],
@@ -28,7 +28,7 @@ export class PersonComponent implements OnInit {
     private fb: FormBuilder,
     private messageService: MessageService,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -59,8 +59,7 @@ export class PersonComponent implements OnInit {
   }
   deletePerson() {
     this.personApiService.deletePerson$(this.id_quary).subscribe({
-      next: (res:{}) => {
-        
+      next: (res: {}) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -68,7 +67,7 @@ export class PersonComponent implements OnInit {
         });
         this.returnToPeopleListPage();
       },
-      error: (err:HttpErrorResponse) => {
+      error: (err: HttpErrorResponse) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -88,5 +87,6 @@ export class PersonComponent implements OnInit {
   onSubmitEditForm(event: any) {
     this.isEditFormSubmitted = event;
     this.showEditModal = false;
+    this.getPersonDetail();
   }
 }
