@@ -68,16 +68,16 @@ describe('CreatePersonComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['']);
   });
 
-  it('should emit isCreateFormSubmitted event after successful person creation', () => {
+  it('should emit isCreateFormDone event after successful person creation', () => {
     spyOn(personApiService, 'addPerson$').and.returnValue(of({}));
-    const emitSpy = spyOn(component.isCreateFormSubmitted, 'emit');
+    const emitSpy = spyOn(component.isCreateFormDone, 'emit');
     component.createPerson();
 
     expect(emitSpy).toHaveBeenCalledWith(true);
   });
 
-  it('should emit isCreateFormSubmitted event and reset the form when cancelCreateModal is called', () => {
-    const emitSpy = spyOn(component.isCreateFormSubmitted, 'emit');
+  it('should emit isCreateFormDone event and reset the form when cancelCreateModal is called', () => {
+    const emitSpy = spyOn(component.isCreateFormDone, 'emit');
     const resetSpy = spyOn(component.personForm, 'reset');
     component.cancelCreateModal();
 

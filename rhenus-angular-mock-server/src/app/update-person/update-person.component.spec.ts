@@ -7,6 +7,10 @@ import { MessageService } from 'primeng/api';
 import { Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+/**
+ * The UpdatePersonComponent unit tests.
+ */
+
 describe('UpdatePersonComponent', () => {
   let component: UpdatePersonComponent;
   let fixture: ComponentFixture<UpdatePersonComponent>;
@@ -77,7 +81,7 @@ describe('UpdatePersonComponent', () => {
     });
   });
 
-  it('should emit isEditFormSubmitted event and reset form on cancelPersonDetail', () => {
+  it('should emit isEditFormDone event and reset form on cancelPersonDetail', () => {
     spyOn(component.isEditingFormFinished, 'emit');
     spyOn(component.personForm, 'reset');
 
@@ -99,7 +103,7 @@ describe('UpdatePersonComponent', () => {
 
     expect(personApiServiceSpy.updatePerson$).toHaveBeenCalled();
   });
-  it('should emit isEditFormSubmitted event and reset form on successful update', () => {
+  it('should emit isEditFormDone event and reset form on successful update', () => {
     personApiServiceSpy.updatePerson$.and.returnValue(of({}));
 
     spyOn(component.isEditingFormFinished, 'emit');

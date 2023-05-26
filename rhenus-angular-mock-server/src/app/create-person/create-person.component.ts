@@ -5,14 +5,18 @@ import { Router } from '@angular/router';
 import { INewPerson, IPerson } from '../models/person';
 import { MessageService } from 'primeng/api';
 
+/**
+ * This component is responsible for creating a new person using a form.
+ */
+
 @Component({
   selector: 'app-create-person',
   templateUrl: './create-person.component.html',
   styleUrls: ['./create-person.component.css'],
 })
 export class CreatePersonComponent {
-  @Output() isCreateFormSubmitted = new EventEmitter<boolean>();
-  showCreateModal: boolean;
+  @Output() isCreateFormDone = new EventEmitter<boolean>();
+  showCreateFormModal: boolean;
   people: IPerson[];
   personForm: FormGroup = this.fb.group({
     id: [''],
@@ -35,21 +39,23 @@ export class CreatePersonComponent {
     private fb: FormBuilder,
     private messageService: MessageService
   ) {}
- 
+  /**
+   * Creates a new person using the provided form data.
+   */
   createPerson() {
-    let person: INewPerson = {
+    let person_body_request: INewPerson = {
       first_name: this.personForm.controls['first_name'].value,
       last_name: this.personForm.controls['last_name'].value,
       email: this.personForm.controls['email'].value,
     };
-    this.personApiService.addPerson$(person).subscribe({
+    this.personApiService.addPerson$(person_body_request).subscribe({
       next: (response) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Create Successfully',
         });
-        this.isCreateFormSubmitted.emit(true);
+        this.isCreateFormDone.emit(true);
         this.personForm.reset();
 
         this.router.navigate(['']);
@@ -63,8 +69,11 @@ export class CreatePersonComponent {
       },
     });
   }
+  /**
+   * Cancels the creation of a new person and resets the form.
+   */
   cancelCreateModal() {
-    this.isCreateFormSubmitted.emit(true);
+    this.isCreateFormDone.emit(true);
     this.personForm.reset();
     this.router.navigate(['']);
   }

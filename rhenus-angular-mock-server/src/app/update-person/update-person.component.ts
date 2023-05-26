@@ -1,3 +1,7 @@
+/**
+ * The UpdatePersonComponent class.
+ * It is responsible for updating the details of a person using a form.
+ */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PersonApiServices } from '../services/person-api-services';
 import { MessageService } from 'primeng/api';
@@ -18,12 +22,24 @@ export class UpdatePersonComponent implements OnInit {
     last_name: ['', [Validators.minLength(2), Validators.maxLength(20)]],
     first_name: ['', [Validators.minLength(2), Validators.maxLength(20)]],
   });
+  /**
+   * Constructor of the UpdatePersonComponent class.
+   * @param personApiService The service for interacting with the person API.
+   * @param fb The FormBuilder instance for building the person form.
+   * @param messageService The service for displaying messages.
+   * @param router The Angular router for navigation.
+   */
   constructor(
     private personApiService: PersonApiServices,
     private fb: FormBuilder,
     private messageService: MessageService,
     private router: Router
   ) {}
+
+  /**
+   * Lifecycle hook that is called after data-bound properties of the component are initialized.
+   * Sets the initial values of the personForm based on the provided person FormGroup.
+   */
   ngOnInit(): void {
     this.personForm.setValue({
       id: this.person.controls['id'].value,
@@ -32,6 +48,10 @@ export class UpdatePersonComponent implements OnInit {
       email: this.person.controls['email'].value,
     });
   }
+  /**
+   * Updates the details of the person.
+   * Sends the updated person details to the API and handles the response.
+   */
   updateDetail() {
     let updated_person = {};
     Object.keys(this.personForm.controls).forEach((control) => {
@@ -61,6 +81,11 @@ export class UpdatePersonComponent implements OnInit {
       },
     });
   }
+  
+  /**
+   * Cancels the editing of person details.
+   * Emits an event to indicate that the editing form is finished and resets the form.
+   */
   cancelPersonDetail() {
     this.isEditingFormFinished.emit(true);
     this.personForm.reset();

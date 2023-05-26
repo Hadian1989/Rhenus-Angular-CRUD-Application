@@ -89,8 +89,8 @@ describe('PeopleComponent', () => {
 
     component.onSubmitCreateForm(mockEvent);
 
-    expect(component.isCreateFormSubmitted).toBe(mockEvent);
-    expect(component.showCreateModal).toBeFalsy();
+    expect(component.isCreateFormDone).toBe(mockEvent);
+    expect(component.showCreateFormModal).toBeFalsy();
     expect(component.getPeople).toHaveBeenCalled();
   });
 

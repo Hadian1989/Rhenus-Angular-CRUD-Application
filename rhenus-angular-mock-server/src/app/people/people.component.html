@@ -90,10 +90,10 @@
 <!-- Start Create Person Modal -->
 <p-dialog
   header="Create New person"
-  [(visible)]="showCreateModal"
+  [(visible)]="showCreateFormModal"
   [style]="{ width: '50vw' }"
 >
-  <app-create-person (isCreateFormSubmitted)="onSubmitCreateForm($event)">
+  <app-create-person (isCreateFormDone)="onSubmitCreateForm($event)">
   </app-create-person>
 </p-dialog>
 <!-- End Create Person Modal -->

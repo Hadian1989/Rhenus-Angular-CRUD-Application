@@ -6,6 +6,10 @@ import {
 import { PersonApiServices } from './person-api-services';
 import { INewPerson, IPerson } from '../models/person';
 
+/**
+ * This test suite contains unit tests for the PersonApiServices service.
+ */
+
 describe('PersonApiService', () => {
   let service: PersonApiServices;
   let httpMock: HttpTestingController;

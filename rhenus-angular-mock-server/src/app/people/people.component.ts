@@ -1,8 +1,13 @@
+/**
+ * This component represents the 'People' page of the Angular application.
+ * It displays a table of people and provides functionality to interact with them.
+ */
 import { Component, OnInit } from '@angular/core';
 import { IPerson } from '../models/person';
 import { PersonApiServices } from '../services/person-api-services';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-people',
@@ -11,9 +16,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   providers: [MessageService, ConfirmationService],
 })
 export class PeopleComponent implements OnInit {
-  isCreateFormSubmitted: any;
-  tableColHeader: { header: string }[] = [];
-  people: IPerson[] = [];
+  isCreateFormDone: any; // Variable to track if the create form is submitted
+  tableColHeader: { header: string }[] = []; // Array to store table column headers
+  people: IPerson[] = []; // Array to store the list of people
 
   constructor(
     private personApiService: PersonApiServices,
@@ -23,8 +28,10 @@ export class PeopleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getPeople();
-    this.showCreateModal = false;
+    this.getPeople(); // Call the method to fetch the list of people
+    this.showCreateFormModal = false; // Set the create modal to be initially hidden
+
+    // Define the column headers for the table
     this.tableColHeader = [
       { header: 'ID' },
       { header: 'First Name' },
@@ -33,11 +40,14 @@ export class PeopleComponent implements OnInit {
       { header: 'Action' },
     ];
   }
-
+  /**
+   * Retrieves the list of people from the API.
+   * Displays an error message if the request is unsuccessful.
+   */
   getPeople() {
     this.personApiService.getPeople$().subscribe({
-      next: (res) => {
-        this.people = res;
+      next: (resposne) => {
+        this.people = resposne;
       },
       error: (err) => {
         this.messageService.add({
@@ -48,7 +58,14 @@ export class PeopleComponent implements OnInit {
       },
     });
   }
-
+  /**
+   * Deletes a person with the specified ID.
+   * Displays a confirmation dialog and sends a request to delete the person.
+   * Displays success or error message based on the response.
+   * Fetches the updated list of people after successful deletion.
+   * @param userId The ID of the person to be deleted
+   * @param event The event object associated with the delete action
+   */
   deletePerson(userId: number, event: Event) {
     this.confirmationService.confirm({
       target: event.target!,
@@ -82,22 +99,44 @@ export class PeopleComponent implements OnInit {
       },
     });
   }
-  showCreateModal: boolean = false;
+  showCreateFormModal: boolean = false;
+  /**
+   * Opens the create modal dialog.
+   * Sets the 'showCreateModal' variable to true to show the modal.
+   */
   openCreateModal() {
-    this.showCreateModal = true;
+    this.showCreateFormModal = true;
   }
+  /**
+   * Cancels the create modal dialog.
+   * Sets the 'showCreateModal' variable to false to hide the modal.
+   */
   cancelCreateModal() {
-    this.showCreateModal = false;
+    this.showCreateFormModal = false;
   }
+  /**
+   * Navigates to the detail page of a person with the specified ID.
+   * @param personId The ID of the person
+   */
   onClickViewDetail(personId: number) {
     this.router.navigate([`/person/${personId}`]);
   }
+  /**
+   * Navigates to the edit page of a person with the specified ID.
+   * @param personId The ID of the person
+   */
   onClickEditDetail(personId: number) {
     this.router.navigate([`/person/${personId}`]);
   }
+  /**
+   * Handles the form submission event from the create form.
+   * Updates the 'isCreateFormSubmitted' variable.
+   * Hides the create modal and fetches the updated list of people.
+   * @param event The form submission event
+   */
   onSubmitCreateForm(event: any) {
-    this.isCreateFormSubmitted = event;
-    this.showCreateModal = false;
+    this.isCreateFormDone = event;
+    this.showCreateFormModal = false;
     this.getPeople();
   }
 }
